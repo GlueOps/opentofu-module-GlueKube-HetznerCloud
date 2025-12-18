@@ -31,6 +31,10 @@ variable "autoglue_org_secret" {
   type = string
   sensitive = true
 }
+variable "autoglue_cluster_name" {
+  type = string
+  default = "demo"
+}
 
 variable "zone_id" {
   type = string
@@ -60,4 +64,15 @@ variable "domain_name" {
 variable "server_type" {
   type = string
   default = "cpx21"
+}
+
+
+variable "gluekube_docker_image" {
+  type = string
+  default = "ghcr.io/glueops/gluekube"
+}
+
+variable "gluekube_docker_tag" {
+  type = string
+  default = "v0.0.9"
 }
