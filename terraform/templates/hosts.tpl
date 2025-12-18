@@ -26,4 +26,5 @@ all:
             labels:
               - use-as-loadbalancer=platform
               - node-public-ip=${vm.public}
+              - node-private-ip=${vm.private}
       %{ endfor }

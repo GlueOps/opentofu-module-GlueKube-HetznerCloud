@@ -18,6 +18,10 @@ variable "location" {
   
 }
 
+variable "autoglue_org_id" {
+  type = string
+}
+
 variable "autoglue_key" {
   type = string
   sensitive = true
@@ -41,6 +45,11 @@ variable "aws_access_key_id_route53" {
 variable "aws_secret_access_key_route53" {
   type = string
   sensitive = true
+}
+variable "aws_region" {
+  description = "AWS region to deploy resources in"
+  type        = string
+  default     = "us-west-2"
 }
 
 variable "domain_name" {

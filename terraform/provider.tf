@@ -17,13 +17,17 @@ provider "hcloud" {
   token = var.hcloud_token
 }
 
+
 provider "autoglue" {
-  org_id = "dd3d6db4-8a9b-473f-a416-04fd3fcd9dc2"
+  org_id = var.autoglue_org_id
   base_url = "https://autoglue.glueopshosted.com/api/v1"
   org_key = var.autoglue_key
   org_secret = var.autoglue_org_secret
 }
 
 provider "aws" {
-  region  = "us-west-2"
+  alias = "aws_route53"
+  region  = var.aws_region
+  access_key = var.aws_access_key_id_route53
+  secret_key = var.aws_secret_access_key_route53
 }
