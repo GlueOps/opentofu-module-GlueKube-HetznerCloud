@@ -2,9 +2,6 @@
 variable "hcloud_token" {
   sensitive = true # Requires terraform >= 0.14
 }
-variable "public_key" {
-  sensitive = true # Requires terraform >= 0.14
-}
 variable "master_node_count" {
   type = number
   default = 3
@@ -36,12 +33,12 @@ variable "zone_id" {
   sensitive = true
 }
 
-variable "aws_access_key_id" {
+variable "aws_access_key_id_route53" {
   type = string
   sensitive = true
 }
 
-variable "aws_secret_access_key" {
+variable "aws_secret_access_key_route53" {
   type = string
   sensitive = true
 }

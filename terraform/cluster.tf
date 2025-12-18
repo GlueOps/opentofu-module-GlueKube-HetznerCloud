@@ -132,8 +132,8 @@ resource "autoglue_credential" "route53" {
   scope_kind  = "service"
 
   secret = {
-    access_key_id = var.aws_access_key_id 
-    secret_access_key = var.aws_secret_access_key 
+    access_key_id = var.aws_access_key_id_route53
+    secret_access_key = var.aws_secret_access_key_route53 
   }
 
   region     = "us-west-2"
