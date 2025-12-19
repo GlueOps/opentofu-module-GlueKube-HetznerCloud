@@ -1,0 +1,73 @@
+resource "autoglue_ssh_key" "ssh-key" {
+  name    = "gluekube-${var.role}"
+  comment = "GlueKube ${var.role} SSH Key"
+}
+
+
+resource "autoglue_server" "node" {
+  for_each           = toset([for i in range(0, var.node_count) : tostring(i)])
+  hostname           = "${var.node_pool_name}-${each.key}"
+  public_ip_address  = hcloud_server.cluster_node[each.key].ipv4_address
+  private_ip_address = hcloud_server_network.cluster_node_network[each.key].ip
+  role               = var.role
+  ssh_key_id         = autoglue_ssh_key.ssh-key.id
+  ssh_user           = "cluster"
+}
+
+
+
+resource "autoglue_node_pool" "node_pool" {
+  name = var.role
+  role = var.role
+}
+
+resource "autoglue_node_pool_servers" "node_pool_servers" {
+  node_pool_id = autoglue_node_pool.node_pool.id
+  server_ids   = [for s in autoglue_server.node : s.id]
+}
+
+
+
+resource "autoglue_taint" "node_taints" {
+  for_each = { for idx, taint in var.kubernetes_taints : idx => taint }
+
+  key    = each.value.key
+  value  = each.value.value
+  effect = each.value.effect
+}
+
+
+resource "autoglue_label" "node_labels" {
+  for_each = var.kubernetes_labels
+  key      = each.key
+  value    = each.value
+}
+
+
+resource "autoglue_node_pool_labels" "node_pool_labels" {
+  node_pool_id = autoglue_node_pool.node_pool.id
+  label_ids    = [for label in autoglue_label.node_labels : label.id]
+}
+
+resource "autoglue_node_pool_taints" "node_pool_taints" {
+  count        = length(var.kubernetes_taints) > 0 ? 1 : 0
+  node_pool_id = autoglue_node_pool.node_pool.id
+  taint_ids    = [for taint in autoglue_taint.node_taints : taint.id]
+}
+
+resource "autoglue_domain" "captain" {
+  count         = var.role == "master" ? 1 : 0
+  domain_name   = var.domain_name
+  credential_id = var.credential_id
+  zone_id       = var.zone_id
+}
+
+resource "autoglue_record_set" "cluster_record" {
+  count     = var.role == "master" ? 1 : 0
+  domain_id = autoglue_domain.captain[0].id
+  name      = "ctrp"
+  type      = "A"
+  ttl       = 60
+  values    = [for s in autoglue_server.node : s.private_ip_address]
+}
+

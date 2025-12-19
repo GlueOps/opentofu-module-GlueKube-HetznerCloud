@@ -19,15 +19,15 @@ provider "hcloud" {
 
 
 provider "autoglue" {
-  org_id = var.autoglue_org_id
-  base_url = "https://autoglue.glueopshosted.com/api/v1"
-  org_key = var.autoglue_key
-  org_secret = var.autoglue_org_secret
+  org_id = var.autoglue.credentials.autoglue_org_id
+  base_url = var.autoglue.credentials.base_url
+  org_key = var.autoglue.credentials.autoglue_key
+  org_secret = var.autoglue.credentials.autoglue_org_secret
 }
 
 provider "aws" {
   alias = "aws_route53"
-  region  = var.aws_region
-  access_key = var.aws_access_key_id_route53
-  secret_key = var.aws_secret_access_key_route53
+  region  = var.autoglue.route_53_config.aws_region
+  access_key = var.autoglue.route_53_config.aws_access_key_id
+  secret_key = var.autoglue.route_53_config.aws_secret_access_key
 }
