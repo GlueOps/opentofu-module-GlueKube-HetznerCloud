@@ -53,6 +53,6 @@ variable "credential_id" {
 }
 
 
-variable "node_pool_name" {
+variable "name" {
   type = string
 }

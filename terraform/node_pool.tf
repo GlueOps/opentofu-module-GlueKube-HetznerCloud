@@ -1,7 +1,7 @@
 module "node_pool" {
-    for_each = { for np in var.node_pools : np.name => np }
-    source   = "./modules/gluekube"
-    node_pool_name        = each.value.name
+    for_each              = { for np in var.node_pools : np.name => np }
+    source                = "./modules/gluekube"
+    name                  = each.value.name
     instance_type         = each.value.instance_type
     role                  = each.value.role
     node_count            = each.value.node_count

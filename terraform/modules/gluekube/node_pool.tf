@@ -6,7 +6,7 @@ resource "autoglue_ssh_key" "ssh-key" {
 
 resource "autoglue_server" "node" {
   for_each           = toset([for i in range(0, var.node_count) : tostring(i)])
-  hostname           = "${var.node_pool_name}-${each.key}"
+  hostname           = "${var.role}-${var.name}-${each.key}"
   public_ip_address  = hcloud_server.cluster_node[each.key].ipv4_address
   private_ip_address = hcloud_server_network.cluster_node_network[each.key].ip
   role               = var.role
@@ -17,7 +17,7 @@ resource "autoglue_server" "node" {
 
 
 resource "autoglue_node_pool" "node_pool" {
-  name = var.role
+  name = "${var.role}-${var.name}"
   role = var.role
 }
 
@@ -45,6 +45,7 @@ resource "autoglue_label" "node_labels" {
 
 
 resource "autoglue_node_pool_labels" "node_pool_labels" {
+  count        = length(var.kubernetes_labels) > 0 ? 1 : 0
   node_pool_id = autoglue_node_pool.node_pool.id
   label_ids    = [for label in autoglue_label.node_labels : label.id]
 }

@@ -12,9 +12,6 @@ resource "hcloud_server" "bastion" {
     ipv4_enabled = true
     ipv6_enabled = true
   }
-  network {
-    network_id = hcloud_network.private_network.id
-  }
   user_data = base64encode("${templatefile("${path.module}/cloudinit/cloud-init-bastion.yaml",{
     public_key = autoglue_ssh_key.bastion.public_key
     hostname = "bastion"
@@ -25,15 +22,22 @@ resource "hcloud_server" "bastion" {
   # depends_on = [hcloud_network_subnet.private_network_subnet]
 }
 
+
+
+resource "hcloud_server_network" "bastion_network" {
+  server_id = hcloud_server.bastion.id
+  subnet_id = hcloud_network_subnet.private_network_subnet.id
+}
+
+
 resource "autoglue_server" "bastion" {
   hostname = "bastion"
   public_ip_address = hcloud_server.bastion.ipv4_address
-  private_ip_address = tolist(hcloud_server.bastion.network)[0].ip
+  private_ip_address = hcloud_server_network.bastion_network.ip
   role = "bastion"
   ssh_key_id = autoglue_ssh_key.bastion.id
   ssh_user = "cluster"
 }
-
 
 resource "autoglue_cluster_bastion" "bastion" {
     cluster_id = autoglue_cluster.cluster.id
