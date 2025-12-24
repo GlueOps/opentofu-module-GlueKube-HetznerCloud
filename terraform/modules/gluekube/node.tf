@@ -2,7 +2,7 @@
 resource "hcloud_server" "cluster_node" {
   for_each    = toset([for i in range(0, var.node_count) : tostring(i)])
   name        = "${var.name}-${each.key}"
-  image       = "ubuntu-24.04"
+  image       = var.image
   server_type = var.instance_type
   location    = var.region
   public_net {

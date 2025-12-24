@@ -10,6 +10,10 @@ variable "instance_type" {
   type = string
 }
 
+variable "image" {
+  type = string
+}
+
 variable "region" {
   type    = string
   default = "hel1"

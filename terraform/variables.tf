@@ -64,6 +64,7 @@ variable "autoglue" {
 variable "node_pools" {
   type = list(object({
     name                = string
+    image               = string
     node_count          = number
     instance_type       = string
     role                = string
