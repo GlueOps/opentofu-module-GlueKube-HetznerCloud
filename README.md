@@ -90,7 +90,7 @@ domain_name           = ""
 main.tf 
 ```HCL
 module "captain" {
-  source                = "https://github.com/GlueOps/opentofu-module-GlueKube-HetznerCloud.git"
+  source                = "git::https://github.com/GlueOps/opentofu-module-GlueKube-HetznerCloud.git"
   gluekube_docker_image = "ghcr.io/glueops/gluekube"
   gluekube_docker_tag   = "v0.0.12"
   vpc_cidr_block        = "10.0.0.0/16"
@@ -201,7 +201,7 @@ module "captain" {
         "use-as-loadbalancer" : "public"
       },
       "kubernetes_taints" : []
-    },
+    }
   ]
   peering_configs = []
 }

@@ -1,6 +1,6 @@
 
 resource "autoglue_cluster" "cluster" {
-  cluster_provider = "hetznercloud"
+  cluster_provider = var.provider_credentials.name
   docker_image = var.gluekube_docker_image
   docker_tag = var.gluekube_docker_tag
   name = var.autoglue.autoglue_cluster_name
@@ -33,3 +33,16 @@ resource "autoglue_credential" "route53" {
   region     = var.autoglue.route_53_config.aws_region
 }
 
+resource "autoglue_domain" "captain" {
+  domain_name   = var.autoglue.route_53_config.domain_name
+  credential_id = autoglue_credential.route53.id
+  zone_id       = var.autoglue.route_53_config.zone_id
+}
+
+resource "autoglue_record_set" "cluster_record" {
+  domain_id = autoglue_domain.captain.id
+  name      = "ctrp"
+  type      = "A"
+  ttl       = 60
+  values    = flatten([for name, pool in module.node_pool : pool.role == "master" ? pool.master_private_ips : []])
+}

@@ -1,5 +1,9 @@
 variable "provider_credentials" {
-  type = map(any)
+  type = object({
+    name  = string
+    token = string
+    region = string
+  })
 }
 
 variable "region" {
@@ -22,10 +26,18 @@ variable "gluekube_docker_tag" {
 variable "vpc_cidr_block" {
   type        = string
   description = "The CIDR block for the VPC"
+  validation {
+    condition     = can(cidrnetmask(var.vpc_cidr_block))
+    error_message = "subnet_cidr must be a valid IPv4 CIDR block, for example: 10.0.1.0/24."
+  }
 }
 
 variable "subnet_cidr" {
   type    = string
+  validation {
+    condition     = can(cidrnetmask(var.subnet_cidr))
+    error_message = "subnet_cidr must be a valid IPv4 CIDR block, for example: 10.0.1.0/24."
+  }
 }
 
 variable "bastion" {

@@ -17,9 +17,7 @@ resource "hcloud_server" "bastion" {
     hostname = "bastion"
   })}")
 
-  # If we don't specify this, Terraform will create the resources in parallel
-  # We want this node to be created after the private network is created
-  # depends_on = [hcloud_network_subnet.private_network_subnet]
+  depends_on = [hcloud_network_subnet.private_network_subnet]
 }
 
 

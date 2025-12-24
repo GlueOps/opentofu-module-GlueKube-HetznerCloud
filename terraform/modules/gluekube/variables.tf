@@ -4,6 +4,8 @@ variable "network_id" {
 
 variable "subnet_id" {
   type = string
+  description = "The CIDR block for the subnet."
+  
 }
 
 variable "instance_type" {

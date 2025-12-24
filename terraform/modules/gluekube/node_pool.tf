@@ -55,20 +55,3 @@ resource "autoglue_node_pool_taints" "node_pool_taints" {
   node_pool_id = autoglue_node_pool.node_pool.id
   taint_ids    = [for taint in autoglue_taint.node_taints : taint.id]
 }
-
-resource "autoglue_domain" "captain" {
-  count         = var.role == "master" ? 1 : 0
-  domain_name   = var.domain_name
-  credential_id = var.credential_id
-  zone_id       = var.zone_id
-}
-
-resource "autoglue_record_set" "cluster_record" {
-  count     = var.role == "master" ? 1 : 0
-  domain_id = autoglue_domain.captain[0].id
-  name      = "ctrp"
-  type      = "A"
-  ttl       = 60
-  values    = [for s in autoglue_server.node : s.private_ip_address]
-}
-
