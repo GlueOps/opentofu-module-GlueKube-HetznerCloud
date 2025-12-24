@@ -14,7 +14,7 @@ terraform {
 
 # Configure the Hetzner Cloud Provider with your token
 provider "hcloud" {
-  token = var.hcloud_token
+  token = var.provider_credentials.token
 }
 
 

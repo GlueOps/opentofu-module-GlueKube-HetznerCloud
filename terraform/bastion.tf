@@ -5,8 +5,8 @@ resource "autoglue_ssh_key" "bastion" {
 
 resource "hcloud_server" "bastion" {
   name        = "bastion"
-  image       = "ubuntu-24.04"
-  server_type = "cpx21"
+  image       = var.bastion.image
+  server_type = var.bastion.instance_type
   location    = var.region
   public_net {
     ipv4_enabled = true

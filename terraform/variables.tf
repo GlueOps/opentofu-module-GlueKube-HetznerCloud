@@ -1,6 +1,5 @@
-# Declare the hcloud_token variable from .tfvars
-variable "hcloud_token" {
-  sensitive = true # Requires terraform >= 0.14
+variable "provider_credentials" {
+  type = map(any)
 }
 
 variable "region" {
@@ -27,6 +26,15 @@ variable "vpc_cidr_block" {
 
 variable "subnet_cidr" {
   type    = string
+}
+
+variable "bastion" {
+  description = "Bastion configuration."
+  type = object({
+    instance_type       = string
+    disk_size_gb        = number
+    image               = string
+  })
 }
 
 variable "autoglue" {
