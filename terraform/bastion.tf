@@ -4,7 +4,7 @@ resource "autoglue_ssh_key" "bastion" {
 }
 
 resource "hcloud_server" "bastion" {
-  name        = "bastion"
+  name        = "${var.autoglue.autoglue_cluster_name}-bastion"
   image       = var.bastion.image
   server_type = var.bastion.instance_type
   location    = var.region

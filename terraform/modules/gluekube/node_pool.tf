@@ -55,3 +55,9 @@ resource "autoglue_node_pool_taints" "node_pool_taints" {
   node_pool_id = autoglue_node_pool.node_pool.id
   taint_ids    = [for taint in autoglue_taint.node_taints : taint.id]
 }
+
+
+resource "autoglue_cluster_node_pools" "cluster_node_pools" {
+  cluster_id = var.cluster_id
+  node_pool_ids = [autoglue_node_pool.node_pool.id]
+}

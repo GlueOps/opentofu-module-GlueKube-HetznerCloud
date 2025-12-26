@@ -15,4 +15,5 @@ module "node_pool" {
     subnet_id             = hcloud_network_subnet.private_network_subnet.id
     vpc_cidr              = var.vpc_cidr_block
     cluster_name          = var.autoglue.autoglue_cluster_name
+    cluster_id            = autoglue_cluster.cluster.id
 }
