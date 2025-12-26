@@ -28,25 +28,58 @@ resource "hcloud_server_network" "cluster_node_network" {
 resource "hcloud_firewall" "firewall" {
   name = "${var.role}-${var.name}-firewall"
 
+  # Internal/private network - allow all TCP ports
   rule {
     direction = "in"
     protocol  = "tcp"
     port      = "any"
     source_ips = [
-      "0.0.0.0/0",
-      "::/0"
+      "10.0.0.0/16"
     ]
   }
+
+  # Internal/private network - allow all UDP ports
   rule {
     direction = "in"
     protocol  = "udp"
     port      = "any"
+    source_ips = [
+      "10.0.0.0/16"
+    ]
+  }
+
+  # Public access - SSH (port 22)
+  rule {
+    direction = "in"
+    protocol  = "tcp"
+    port      = "22"
     source_ips = [
       "0.0.0.0/0",
       "::/0"
     ]
   }
 
+  # Public access - HTTP (port 80)
+  rule {
+    direction = "in"
+    protocol  = "tcp"
+    port      = "80"
+    source_ips = [
+      "0.0.0.0/0",
+      "::/0"
+    ]
+  }
+
+  # Public access - HTTPS (port 443)
+  rule {
+    direction = "in"
+    protocol  = "tcp"
+    port      = "443"
+    source_ips = [
+      "0.0.0.0/0",
+      "::/0"
+    ]
+  }
 }
 
 
