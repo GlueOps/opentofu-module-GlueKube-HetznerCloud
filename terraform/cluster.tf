@@ -9,7 +9,7 @@ resource "autoglue_cluster" "cluster" {
 
 
 resource "autoglue_credential" "route53" {
-  name        = "route53-main"
+  name        = "${var.autoglue.autoglue_cluster_name}-route53-credential"
   account_id = "1234567890"
   credential_provider = "aws"
   kind  = "aws_access_key"

@@ -26,7 +26,7 @@ resource "hcloud_server_network" "cluster_node_network" {
 
 
 resource "hcloud_firewall" "firewall" {
-  name = "${var.role}-${var.name}-firewall"
+  name = "${var.cluster_name}-${var.role}-${var.name}-firewall"
 
   # Internal/private network - allow all TCP ports
   rule {

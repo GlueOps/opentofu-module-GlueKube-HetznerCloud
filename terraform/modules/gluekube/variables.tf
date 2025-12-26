@@ -67,3 +67,7 @@ variable "credential_id" {
 variable "name" {
   type = string
 }
+
+variable "cluster_name" {
+  type = string
+}

@@ -1,5 +1,5 @@
 resource "hcloud_network" "private_network" {
-  name     = "kubernetes-cluster"
+  name     = var.autoglue.autoglue_cluster_name
   ip_range = var.vpc_cidr_block
 }
 
