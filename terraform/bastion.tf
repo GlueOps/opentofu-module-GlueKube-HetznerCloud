@@ -45,7 +45,7 @@ resource "autoglue_cluster_bastion" "bastion" {
 
 
 resource "hcloud_firewall" "bastion-firewall" {
-  name = "bastion-firewall"
+  name = "${var.autoglue.autoglue_cluster_name}-bastion-firewall"
   # Public access - SSH (port 22)
   rule {
     direction = "in"
