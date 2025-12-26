@@ -18,6 +18,7 @@ resource "hcloud_server" "bastion" {
   })}")
 
   depends_on = [hcloud_network_subnet.private_network_subnet]
+  firewall_ids = [hcloud_firewall.bastion-firewall.id]
 }
 
 
@@ -40,4 +41,20 @@ resource "autoglue_server" "bastion" {
 resource "autoglue_cluster_bastion" "bastion" {
     cluster_id = autoglue_cluster.cluster.id
     server_id = autoglue_server.bastion.id
+}
+
+
+resource "hcloud_firewall" "bastion-firewall" {
+  name = "bastion-firewall"
+  # Public access - SSH (port 22)
+  rule {
+    direction = "in"
+    protocol  = "tcp"
+    port      = "22"
+    source_ips = [
+      "0.0.0.0/0",
+      "::/0"
+    ]
+  }
+
 }

@@ -13,4 +13,5 @@ module "node_pool" {
     domain_name           = var.autoglue.route_53_config.domain_name
     network_id            = hcloud_network.private_network.id
     subnet_id             = hcloud_network_subnet.private_network_subnet.id
+    vpc_cidr              = var.vpc_cidr_block
 }

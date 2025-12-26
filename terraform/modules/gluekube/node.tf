@@ -34,7 +34,7 @@ resource "hcloud_firewall" "firewall" {
     protocol  = "tcp"
     port      = "any"
     source_ips = [
-      "10.0.0.0/16"
+      var.vpc_cidr
     ]
   }
 
@@ -44,7 +44,7 @@ resource "hcloud_firewall" "firewall" {
     protocol  = "udp"
     port      = "any"
     source_ips = [
-      "10.0.0.0/16"
+      var.vpc_cidr
     ]
   }
 

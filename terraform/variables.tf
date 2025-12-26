@@ -28,7 +28,7 @@ variable "vpc_cidr_block" {
   description = "The CIDR block for the VPC"
   validation {
     condition     = can(cidrnetmask(var.vpc_cidr_block))
-    error_message = "subnet_cidr must be a valid IPv4 CIDR block, for example: 10.0.1.0/24."
+    error_message = "vpc_cidr_block must be a valid IPv4 CIDR block, for example: 10.0.1.0/24."
   }
 }
 
