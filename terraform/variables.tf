@@ -44,7 +44,6 @@ variable "bastion" {
   description = "Bastion configuration."
   type = object({
     instance_type       = string
-    disk_size_gb        = number
     image               = string
   })
 }
@@ -80,7 +79,6 @@ variable "node_pools" {
     node_count          = number
     instance_type       = string
     role                = string
-    disk_size_gb        = number
     kubernetes_labels   = map(string)
     kubernetes_taints = list(object({
       key    = string
@@ -102,16 +100,3 @@ variable "node_pools" {
   }
 }
 
-
-variable "peering_configs" {
-  type = list(object({
-    vpc_peering_connection_id = string
-    destination_cidr_block   = string
-  }))
-  default = []
-  description = <<-DESC
-  VPC Peering configurations:
-    - vpc_peering_connection_id (string): The ID of the VPC peering connection.
-    - destination_cidr_block (string): The CIDR block of the destination VPC.
-  DESC
-}

@@ -116,7 +116,6 @@ module "captain" {
   }
   bastion = {
     instance_type = "cpx21"
-    disk_size_gb  = 20
     image         = "ubuntu-24.04"
   }
   node_pools = [
@@ -126,7 +125,6 @@ module "captain" {
       "name" : "node-pool",
       "image" : "ubuntu-24.04",
       "node_count" : 3,
-      "disk_size_gb" : 20,
       "kubernetes_labels" : {},
       "kubernetes_taints" : []
     },
@@ -136,7 +134,6 @@ module "captain" {
       "name" : "glueops-platform-node-pool-1",
       "image" : "ubuntu-24.04",
       "node_count" : 4,
-      "disk_size_gb" : 20,
       "kubernetes_labels" : {
         "glueops.dev/role" : "glueops-platform"
       },
@@ -154,7 +151,6 @@ module "captain" {
       "name" : "glueops-platform-node-pool-argocd-app-controller",
       "node_count" : 2,
       "image" : "ubuntu-24.04",
-      "disk_size_gb" : 20,
       "kubernetes_labels" : {
         "glueops.dev/role" : "glueops-platform-argocd-app-controller"
       },
@@ -172,7 +168,6 @@ module "captain" {
       "name" : "clusterwide-node-pool-1",
       "image" : "ubuntu-24.04",
       "node_count" : 2,
-      "disk_size_gb" : 20,
       "kubernetes_labels" : {},
       "kubernetes_taints" : []
     },
@@ -182,7 +177,6 @@ module "captain" {
       "name" : "node-pool-platform-loadbalancer",
       "image" : "ubuntu-24.04",
       "node_count" : 2,
-      "disk_size_gb" : 20,
       "kubernetes_labels" : {
         "glueops.dev/role" : "glueops-platform",
         "use-as-loadbalancer" : "platform"
@@ -195,7 +189,6 @@ module "captain" {
       "name" : "node-pool-public-loadbalancer",
       "image" : "ubuntu-24.04",
       "node_count" : 2,
-      "disk_size_gb" : 20,
       "kubernetes_labels" : {
         "glueops.dev/role" : "glueops-platform",
         "use-as-loadbalancer" : "public"
