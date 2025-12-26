@@ -1,7 +1,7 @@
 
 resource "hcloud_server" "cluster_node" {
   for_each    = toset([for i in range(0, var.node_count) : tostring(i)])
-  name        = "${var.name}-${each.key}"
+  name        = "${var.cluster_name}-${var.name}-${each.key}"
   image       = var.image
   server_type = var.instance_type
   location    = var.region
@@ -26,7 +26,7 @@ resource "hcloud_server_network" "cluster_node_network" {
 
 
 resource "hcloud_firewall" "firewall" {
-  name = "${var.cluster_name}-${var.role}-${var.name}-firewall"
+  name = "${var.cluster_name}-${var.name}-${var.role}-firewall"
 
   # Internal/private network - allow all TCP ports
   rule {
