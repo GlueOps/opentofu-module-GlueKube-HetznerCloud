@@ -98,5 +98,10 @@ variable "node_pools" {
     condition     = sum([for np in var.node_pools : np.node_count if np.role == "master"]) % 2 == 1
     error_message = "The sum of node_count for all master node pools must be odd for proper etcd quorum."
   }
+
+  validation {
+    condition     = alltrue([for np in var.node_pools : contains(["master", "worker"], np.role)])
+    error_message = "Each node pool role must be either 'master' or 'worker'."
+  }
 }
 
