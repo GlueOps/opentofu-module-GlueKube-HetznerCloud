@@ -1,5 +1,5 @@
 resource "autoglue_ssh_key" "ssh_key" {
-  name    = "${var.cluster_name}-${var.role}"
+  name    = "${var.cluster_name}-${var.name}"
   comment = "GlueKube ${var.role} SSH Key"
 }
 
