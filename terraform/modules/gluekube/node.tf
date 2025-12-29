@@ -9,16 +9,16 @@ resource "hcloud_server" "cluster_node" {
     ipv4_enabled = true
     ipv6_enabled = true
   }
-  user_data = base64encode("${templatefile("${path.module}/cloudinit/cloud-init-${var.role}.yaml",{
+  user_data = base64encode("${templatefile("${path.module}/cloudinit/cloud-init-${var.role}.yaml", {
     public_key = autoglue_ssh_key.ssh-key.public_key
-    hostname = "${var.role}-${var.name}-${each.key}"
+    hostname   = "${var.role}-${var.name}-${each.key}"
   })}")
 
   firewall_ids = [hcloud_firewall.firewall.id]
 }
 
 resource "hcloud_server_network" "cluster_node_network" {
-  for_each = hcloud_server.cluster_node
+  for_each  = hcloud_server.cluster_node
   server_id = each.value.id
   subnet_id = var.subnet_id
 }

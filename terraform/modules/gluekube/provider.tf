@@ -6,11 +6,11 @@ terraform {
       version = "1.49.1"
     }
     autoglue = {
-      source = "registry.terraform.io/GlueOps/autoglue"
+      source  = "registry.terraform.io/GlueOps/autoglue"
       version = "0.9.2"
     }
     random = {
-      source = "hashicorp/random"
+      source  = "hashicorp/random"
       version = "3.7.2"
     }
   }

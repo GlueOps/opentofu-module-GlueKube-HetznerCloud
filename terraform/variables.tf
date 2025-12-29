@@ -1,7 +1,7 @@
 variable "provider_credentials" {
   type = object({
-    name  = string
-    token = string
+    name   = string
+    token  = string
     region = string
   })
 }
@@ -9,7 +9,7 @@ variable "provider_credentials" {
 variable "region" {
   type    = string
   default = "hel1"
-  
+
 }
 
 
@@ -33,7 +33,7 @@ variable "vpc_cidr_block" {
 }
 
 variable "subnet_cidr" {
-  type    = string
+  type = string
   validation {
     condition     = can(cidrnetmask(var.subnet_cidr))
     error_message = "subnet_cidr must be a valid IPv4 CIDR block, for example: 10.0.1.0/24."
@@ -43,8 +43,8 @@ variable "subnet_cidr" {
 variable "bastion" {
   description = "Bastion configuration."
   type = object({
-    instance_type       = string
-    image               = string
+    instance_type = string
+    image         = string
   })
 }
 
@@ -52,7 +52,7 @@ variable "autoglue" {
   description = "Configuration for the AutoGlue platform integration, including cluster naming, credentials, and Route53 DNS settings."
   type = object({
     autoglue_cluster_name = string
-    
+
     credentials = object({
       autoglue_org_id     = string
       autoglue_key        = string
@@ -65,7 +65,7 @@ variable "autoglue" {
       aws_secret_access_key = string
       aws_region            = string
       domain_name           = string
-      zone_id             = string
+      zone_id               = string
     })
   })
 }
@@ -74,12 +74,12 @@ variable "autoglue" {
 
 variable "node_pools" {
   type = list(object({
-    name                = string
-    image               = string
-    node_count          = number
-    instance_type       = string
-    role                = string
-    kubernetes_labels   = map(string)
+    name              = string
+    image             = string
+    node_count        = number
+    instance_type     = string
+    role              = string
+    kubernetes_labels = map(string)
     kubernetes_taints = list(object({
       key    = string
       value  = string
@@ -87,7 +87,7 @@ variable "node_pools" {
     }))
 
   }))
- 
+
 
   validation {
     condition     = length([for np in var.node_pools : np if np.role == "master"]) > 0

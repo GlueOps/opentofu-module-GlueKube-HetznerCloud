@@ -3,9 +3,9 @@ variable "network_id" {
 }
 
 variable "subnet_id" {
-  type = string
+  type        = string
   description = "The CIDR block for the subnet."
-  
+
 }
 
 variable "vpc_cidr" {
@@ -37,7 +37,7 @@ variable "role" {
 }
 
 variable "kubernetes_labels" {
-  type    = map(string)
+  type = map(string)
 }
 
 variable "kubernetes_taints" {
