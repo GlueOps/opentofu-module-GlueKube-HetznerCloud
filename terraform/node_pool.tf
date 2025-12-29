@@ -16,4 +16,5 @@ module "node_pool" {
   vpc_cidr          = var.vpc_cidr_block
   cluster_name      = var.autoglue.autoglue_cluster_name
   cluster_id        = autoglue_cluster.cluster.id
+  region            = var.region
 }

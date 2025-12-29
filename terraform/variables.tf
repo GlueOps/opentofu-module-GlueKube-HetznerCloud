@@ -9,7 +9,6 @@ variable "provider_credentials" {
 variable "region" {
   type    = string
   default = "hel1"
-
 }
 
 
