@@ -1,4 +1,4 @@
-resource "autoglue_ssh_key" "ssh-key" {
+resource "autoglue_ssh_key" "ssh_key" {
   name    = "${var.cluster_name}-${var.role}"
   comment = "GlueKube ${var.role} SSH Key"
 }
@@ -10,7 +10,7 @@ resource "autoglue_server" "node" {
   public_ip_address  = hcloud_server.cluster_node[each.key].ipv4_address
   private_ip_address = hcloud_server_network.cluster_node_network[each.key].ip
   role               = var.role
-  ssh_key_id         = autoglue_ssh_key.ssh-key.id
+  ssh_key_id         = autoglue_ssh_key.ssh_key.id
   ssh_user           = "cluster"
 }
 

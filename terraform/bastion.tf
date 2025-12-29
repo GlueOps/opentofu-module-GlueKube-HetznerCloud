@@ -1,5 +1,5 @@
 resource "autoglue_ssh_key" "bastion" {
-  name    = "gluekube-bastion"
+  name    = "${var.autoglue.autoglue_cluster_name}-bastion"
   comment = "GlueKube bastion SSH Key"
 }
 
@@ -44,7 +44,7 @@ resource "autoglue_cluster_bastion" "bastion" {
 }
 
 
-resource "hcloud_firewall" "bastion-firewall" {
+resource "hcloud_firewall" "bastion_firewall" {
   name = "${var.autoglue.autoglue_cluster_name}-bastion-firewall"
   # Public access - SSH (port 22)
   rule {
