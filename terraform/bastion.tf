@@ -18,7 +18,7 @@ resource "hcloud_server" "bastion" {
   })}")
 
   depends_on   = [hcloud_network_subnet.private_network_subnet]
-  firewall_ids = [hcloud_firewall.bastion-firewall.id]
+  firewall_ids = [hcloud_firewall.bastion_firewall.id]
 }
 
 
