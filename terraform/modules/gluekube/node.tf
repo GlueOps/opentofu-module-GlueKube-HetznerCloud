@@ -11,7 +11,7 @@ resource "hcloud_server" "cluster_node" {
   }
   user_data = base64encode("${templatefile("${path.module}/cloudinit/cloud-init-${var.role}.yaml", {
     public_key = autoglue_ssh_key.ssh_key.public_key
-    hostname   = "${var.role}-${var.name}-${each.key}"
+    hostname   = "${var.cluster_name}-${var.name}-${each.key}"
   })}")
 
   firewall_ids = [hcloud_firewall.firewall.id]
@@ -26,7 +26,7 @@ resource "hcloud_server_network" "cluster_node_network" {
 
 
 resource "hcloud_firewall" "firewall" {
-  name = "${var.cluster_name}-${var.name}-${var.role}-firewall"
+  name = "${var.cluster_name}-${var.name}-firewall"
 
   # Internal/private network - allow all TCP ports
   rule {
