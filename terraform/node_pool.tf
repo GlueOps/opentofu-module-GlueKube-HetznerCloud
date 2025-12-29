@@ -8,13 +8,9 @@ module "node_pool" {
   node_count        = each.value.node_count
   kubernetes_labels = each.value.kubernetes_labels
   kubernetes_taints = each.value.kubernetes_taints
-  zone_id           = var.autoglue.route_53_config.zone_id
-  credential_id     = autoglue_credential.route53.id
-  domain_name       = var.autoglue.route_53_config.domain_name
   network_id        = hcloud_network.private_network.id
   subnet_id         = hcloud_network_subnet.private_network_subnet.id
   vpc_cidr          = var.vpc_cidr_block
   cluster_name      = var.autoglue.autoglue_cluster_name
-  cluster_id        = autoglue_cluster.cluster.id
   region            = var.region
 }

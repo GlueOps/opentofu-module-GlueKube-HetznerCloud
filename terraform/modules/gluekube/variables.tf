@@ -49,30 +49,11 @@ variable "kubernetes_taints" {
   default = []
 }
 
-variable "domain_name" {
-  type    = string
-  default = ""
-}
-
-variable "zone_id" {
-  type    = string
-  default = ""
-}
-
-variable "credential_id" {
-  type    = string
-  default = ""
-}
-
 
 variable "name" {
   type = string
 }
 
 variable "cluster_name" {
-  type = string
-}
-
-variable "cluster_id" {
   type = string
 }
