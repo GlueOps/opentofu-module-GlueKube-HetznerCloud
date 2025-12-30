@@ -8,34 +8,9 @@ resource "autoglue_cluster" "cluster" {
 }
 
 
-resource "autoglue_credential" "route53" {
-  name                = "${var.autoglue.autoglue_cluster_name}-route53-credential"
-  account_id          = "1234567890"
-  credential_provider = "aws"
-  kind                = "aws_access_key"
-
-  schema_version = "1"
-
-
-  # Whatever your provider expects for the AWS/Route53 scope:
-  scope = {
-    service = "route53"
-  }
-
-  scope_version = 1
-  scope_kind    = "service"
-
-  secret = {
-    access_key_id     = var.autoglue.route_53_config.aws_access_key_id
-    secret_access_key = var.autoglue.route_53_config.aws_secret_access_key
-  }
-
-  region = var.autoglue.route_53_config.aws_region
-}
-
 resource "autoglue_domain" "captain" {
   domain_name   = var.autoglue.route_53_config.domain_name
-  credential_id = autoglue_credential.route53.id
+  credential_id = var.autoglue.route_53_config.credential_id
   zone_id       = var.autoglue.route_53_config.zone_id
 }
 

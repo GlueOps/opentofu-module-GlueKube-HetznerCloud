@@ -65,6 +65,7 @@ variable "autoglue" {
       aws_region            = string
       domain_name           = string
       zone_id               = string
+      credential_id         = string
     })
   })
 }
