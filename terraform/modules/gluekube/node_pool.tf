@@ -45,14 +45,14 @@ resource "autoglue_label" "node_labels" {
 
 
 resource "autoglue_node_pool_labels" "node_pool_labels" {
-  count        = length(var.kubernetes_labels) > 0 ? 1 : 0
+  for_each     = autoglue_label.node_labels
   node_pool_id = autoglue_node_pool.node_pool.id
-  label_ids    = [for label in autoglue_label.node_labels : label.id]
+  label_ids    = [each.value.id]
 }
 
 resource "autoglue_node_pool_taints" "node_pool_taints" {
-  count        = length(var.kubernetes_taints) > 0 ? 1 : 0
+  for_each     = autoglue_taint.node_taints
   node_pool_id = autoglue_node_pool.node_pool.id
-  taint_ids    = [for taint in autoglue_taint.node_taints : taint.id]
+  taint_ids    = [each.value.id]
 }
 
