@@ -7,7 +7,7 @@ terraform {
     }
     autoglue = {
       source  = "registry.terraform.io/GlueOps/autoglue"
-      version = "0.9.2"
+      version = "0.10.0"
     }
   }
 }
@@ -19,7 +19,6 @@ provider "hcloud" {
 
 
 provider "autoglue" {
-  org_id     = var.autoglue.credentials.autoglue_org_id
   base_url   = var.autoglue.credentials.base_url
   org_key    = var.autoglue.credentials.autoglue_key
   org_secret = var.autoglue.credentials.autoglue_org_secret

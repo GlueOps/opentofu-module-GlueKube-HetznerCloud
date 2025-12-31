@@ -53,7 +53,6 @@ variable "autoglue" {
     autoglue_cluster_name = string
 
     credentials = object({
-      autoglue_org_id     = string
       autoglue_key        = string
       autoglue_org_secret = string
       base_url            = string
