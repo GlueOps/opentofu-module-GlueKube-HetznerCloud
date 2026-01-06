@@ -21,3 +21,16 @@ resource "autoglue_record_set" "cluster_record" {
   ttl       = 60
   values    = flatten([for name, pool in module.node_pool : pool.role == "master" ? pool.master_private_ips : []])
 }
+
+data "autoglue_domains" "domain" {
+  domain_name = var.autoglue.route_53_config.domain_name
+}
+resource "autoglue_cluster_captain_domain" "domain" {
+  cluster_id = autoglue_cluster.cluster.id
+  domain_id  = data.autoglue_domains.domain.domains[0].id
+}
+
+resource "autoglue_cluster_control_plane_record_set" "ctrl_record" {
+  cluster_id    = autoglue_cluster.cluster.id
+  record_set_id = autoglue_record_set.cluster_record.id
+}
