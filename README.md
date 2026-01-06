@@ -27,12 +27,14 @@ domain_name           = ""
 main.tf 
 ```HCL
 module "captain" {
-  source                = "git::https://github.com/GlueOps/opentofu-module-GlueKube-HetznerCloud.git//terraform"
+  source                = "git::https://github.com/GlueOps/opentofu-module-GlueKube-HetznerCloud.git"
   gluekube_docker_image = "ghcr.io/glueops/gluekube"
-  gluekube_docker_tag   = "v0.0.16"
-  vpc_cidr_block        = "10.1.0.0/16"
-  subnet_cidr           = "10.1.0.0/24"
+  gluekube_docker_tag   = "v0.0.15-rc9"
+  vpc_cidr_block        = "10.0.0.0/16"
+  subnet_cidr           = "10.0.0.0/24"
   region                = var.provider_credentials.region
+
+  # control_plane_endpoint_dns = "ctrp"
   provider_credentials = var.provider_credentials
   autoglue = {
     autoglue_cluster_name = var.autoglue_cluster_name
@@ -48,18 +50,19 @@ module "captain" {
       aws_region            = var.route53_region
       domain_name           = var.domain_name
       zone_id               = var.route53_zone_id
+      credential_id         = var.autoglue_credentials_id
     }
   }
   bastion = {
-    instance_type = "cpx21"
+    instance_type = "cpx32"
     image         = "ubuntu-24.04"
   }
 
   node_pools = [
     {
-      "instance_type" : "cpx21",
+      "instance_type" : "cpx32",
       "role" : "master",
-      "name" : "node-pool",
+      "name" : "master-node-pool",
       "image" : "ubuntu-24.04",
       "node_count" : 3,
 
@@ -67,12 +70,12 @@ module "captain" {
       "kubernetes_taints" : []
     },
     {
-      "instance_type" : "cpx21",
+      "instance_type" : "cpx32",
       "role" : "worker",
       "name" : "glueops-platform-node-pool-1",
       "image" : "ubuntu-24.04",
 
-      "node_count" : 4,
+      "node_count" : 2,
 
       "kubernetes_labels" : {
         "glueops.dev/role" : "glueops-platform"
@@ -86,7 +89,7 @@ module "captain" {
       ]
     },
     {
-      "instance_type" : "cpx21",
+      "instance_type" : "cpx32",
       "role" : "worker",
       "name" : "glueops-platform-node-pool-argocd-app-controller",
       "node_count" : 2,
@@ -105,7 +108,7 @@ module "captain" {
       ]
     },
     {
-      "instance_type" : "cpx21",
+      "instance_type" : "cpx32",
       "role" : "worker",
       "name" : "clusterwide-node-pool-1",
       "image" : "ubuntu-24.04",
@@ -115,10 +118,11 @@ module "captain" {
       "kubernetes_labels" : {},
       "kubernetes_taints" : []
     },
+    
     {
-      "instance_type" : "cpx21",
+      "instance_type" : "cpx32",
       "role" : "worker",
-      "name" : "node-pool-platform-loadbalancer",
+      "name" : "node-pool-platform-loadbalancer-2",
       "image" : "ubuntu-24.04",
 
       "node_count" : 2,
@@ -130,7 +134,7 @@ module "captain" {
       "kubernetes_taints" : []
     },
     {
-      "instance_type" : "cpx21",
+      "instance_type" : "cpx32",
       "role" : "worker",
       "name" : "node-pool-public-loadbalancer",
       "image" : "ubuntu-24.04",
@@ -145,4 +149,5 @@ module "captain" {
     },
   ]
 }
+
 ```
