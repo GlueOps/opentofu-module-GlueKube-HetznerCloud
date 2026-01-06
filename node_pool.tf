@@ -14,3 +14,10 @@ module "node_pool" {
   cluster_name      = var.autoglue.autoglue_cluster_name
   region            = var.region
 }
+
+resource "autoglue_cluster_node_pools" "autoglue_cluster_node_pools" {
+  cluster_id = autoglue_cluster.cluster.id
+  node_pool_ids = [
+    for np in module.node_pool : np.node_pool_id
+  ]
+}
