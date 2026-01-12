@@ -1,7 +1,7 @@
 
 resource "hcloud_server" "cluster_node" {
   for_each    = toset([for i in range(0, var.node_count) : tostring(i)])
-  name        = "${var.role}-${var.name}-${each.key}"
+  name        = "${var.role}-${var.cluster_name}-${var.name}-${each.key}"
   image       = var.image
   server_type = var.instance_type
   location    = var.region
