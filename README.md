@@ -54,7 +54,7 @@ module "captain" {
     }
   }
   bastion = {
-    instance_type = "cpx32"
+    instance_type = "cx23"
     image         = "ubuntu-24.04"
   }
 
