@@ -1,7 +1,7 @@
 
 resource "hcloud_server" "cluster_node" {
   for_each    = toset([for i in range(0, var.node_count) : tostring(i)])
-  name        = "${var.role}-${var.cluster_name}-${var.name}-${each.key}"
+  name        = "${var.role}-${var.name}-${each.key}"
   image       = var.image
   server_type = var.instance_type
   location    = var.region
@@ -11,7 +11,7 @@ resource "hcloud_server" "cluster_node" {
   }
   user_data = base64encode("${templatefile("${path.module}/cloudinit/cloud-init-${var.role}.yaml", {
     public_key = autoglue_ssh_key.ssh_key.public_key
-    hostname   = "${var.role}-${var.cluster_name}-${var.name}-${each.key}"
+    hostname   = "${var.role}-${var.name}-${each.key}"
   })}")
 
   firewall_ids = [hcloud_firewall.firewall.id]
@@ -64,6 +64,14 @@ resource "hcloud_firewall" "firewall" {
     direction = "in"
     protocol  = "tcp"
     port      = "80"
+    source_ips = [
+      "0.0.0.0/0",
+      "::/0"
+    ]
+  }
+  rule {
+    direction = "in"
+    protocol  = "icmp"
     source_ips = [
       "0.0.0.0/0",
       "::/0"
