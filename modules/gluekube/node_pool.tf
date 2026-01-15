@@ -17,7 +17,7 @@ resource "autoglue_server" "node" {
 
 
 resource "autoglue_node_pool" "node_pool" {
-  name = "${var.role}-${var.name}-${each.key}"
+  name = "${var.role}-${var.name}"
   role = var.role
 }
 
