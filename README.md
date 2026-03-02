@@ -134,14 +134,14 @@ module "captain" {
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_autoglue"></a> [autoglue](#requirement\_autoglue) | 0.10.0 |
+| <a name="requirement_autoglue"></a> [autoglue](#requirement\_autoglue) | 0.10.5 |
 | <a name="requirement_hcloud"></a> [hcloud](#requirement\_hcloud) | 1.49.1 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_autoglue"></a> [autoglue](#provider\_autoglue) | 0.10.0 |
+| <a name="provider_autoglue"></a> [autoglue](#provider\_autoglue) | 0.10.5 |
 | <a name="provider_hcloud"></a> [hcloud](#provider\_hcloud) | 1.49.1 |
 
 ## Modules
