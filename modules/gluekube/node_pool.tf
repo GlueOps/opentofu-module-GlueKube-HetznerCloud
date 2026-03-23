@@ -43,6 +43,11 @@ resource "autoglue_label" "node_labels" {
   value    = each.value
 }
 
+resource "autoglue_annotation" "node_annotations" {
+  for_each = var.kubernetes_annotations
+  key      = each.key
+  value    = each.value
+}
 
 resource "autoglue_node_pool_labels" "node_pool_labels" {
   count        = length(var.kubernetes_labels) > 0 ? 1 : 0
@@ -56,3 +61,9 @@ resource "autoglue_node_pool_taints" "node_pool_taints" {
   taint_ids    = [for taint in autoglue_taint.node_taints : taint.id]
 }
 
+
+resource "autoglue_node_pool_annotations" "node_pool_annotations" {
+  count          = length(var.kubernetes_annotations) > 0 ? 1 : 0
+  node_pool_id   = autoglue_node_pool.node_pool.id
+  annotation_ids = [for annotation in autoglue_annotation.node_annotations : annotation.id]
+}
