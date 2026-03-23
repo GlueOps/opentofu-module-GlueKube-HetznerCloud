@@ -78,8 +78,8 @@ variable "node_pools" {
     node_count             = number
     instance_type          = string
     role                   = string
-    kubernetes_labels      = map(string)
-    kubernetes_annotations = map(string)
+    kubernetes_labels      = optional(map(string), {})
+    kubernetes_annotations = optional(map(string), {})
     kubernetes_taints = list(object({
       key    = string
       value  = string

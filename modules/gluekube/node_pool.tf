@@ -43,6 +43,11 @@ resource "autoglue_label" "node_labels" {
   value    = each.value
 }
 
+resource "autoglue_annotation" "node_annotations" {
+  for_each = var.kubernetes_annotations
+  key      = each.key
+  value    = each.value
+}
 
 resource "autoglue_node_pool_labels" "node_pool_labels" {
   count        = length(var.kubernetes_labels) > 0 ? 1 : 0
