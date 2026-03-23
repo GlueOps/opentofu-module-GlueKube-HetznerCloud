@@ -40,6 +40,10 @@ variable "kubernetes_labels" {
   type = map(string)
 }
 
+variable "kubernetes_annotations" {
+  type = map(string)
+}
+
 variable "kubernetes_taints" {
   type = list(object({
     key    = string
