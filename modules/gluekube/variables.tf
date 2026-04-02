@@ -61,3 +61,7 @@ variable "name" {
 variable "cluster_name" {
   type = string
 }
+
+variable "attached" {
+  type = bool
+}

@@ -9,3 +9,7 @@ output "master_private_ips" {
 output "node_pool_id" {
   value = autoglue_node_pool.node_pool.id
 }
+
+output "attached" {
+  value = var.attached
+}

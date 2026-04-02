@@ -73,11 +73,12 @@ variable "autoglue" {
 
 variable "node_pools" {
   type = list(object({
-    name                   = string
-    image                  = string
-    node_count             = number
-    instance_type          = string
-    role                   = string
+    name          = string
+    image         = string
+    node_count    = number
+    instance_type = string
+    role          = string
+
     kubernetes_labels      = optional(map(string), {})
     kubernetes_annotations = optional(map(string), {})
     kubernetes_taints = list(object({
@@ -85,13 +86,14 @@ variable "node_pools" {
       value  = string
       effect = string
     }))
+    attached = optional(bool, true)
 
   }))
 
 
   validation {
-    condition     = length([for np in var.node_pools : np if np.role == "master"]) > 0
-    error_message = "At least one node pool must have role = 'master'."
+    condition     = length([for np in var.node_pools : np if np.role == "master" && np.attached]) > 0
+    error_message = "At least one node pool must have role = 'master' and attached = true."
   }
 
 

@@ -14,11 +14,12 @@ module "node_pool" {
   vpc_cidr               = var.vpc_cidr_block
   cluster_name           = var.autoglue.autoglue_cluster_name
   region                 = var.region
+  attached               = each.value.attached
 }
 
 resource "autoglue_cluster_node_pools" "autoglue_cluster_node_pools" {
   cluster_id = autoglue_cluster.cluster.id
   node_pool_ids = [
-    for np in module.node_pool : np.node_pool_id
+    for np in module.node_pool : np.node_pool_id if np.attached
   ]
 }
