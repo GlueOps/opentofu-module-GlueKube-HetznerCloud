@@ -92,8 +92,8 @@ variable "node_pools" {
 
 
   validation {
-    condition     = length([for np in var.node_pools : np if np.role == "master"]) > 0
-    error_message = "At least one node pool must have role = 'master'."
+    condition     = length([for np in var.node_pools : np if np.role == "master" && np.attached]) > 0
+    error_message = "At least one node pool must have role = 'master' and attached = true."
   }
 
 
