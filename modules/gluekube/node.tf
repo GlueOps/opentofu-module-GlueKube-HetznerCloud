@@ -7,7 +7,7 @@ resource "hcloud_server" "cluster_node" {
   location    = var.region
   public_net {
     ipv4_enabled = true
-    ipv6_enabled = true
+    ipv6_enabled = var.enable_ipv6
   }
   user_data = base64encode("${templatefile("${path.module}/cloudinit/cloud-init-${var.role}.yaml", {
     public_key = autoglue_ssh_key.ssh_key.public_key
