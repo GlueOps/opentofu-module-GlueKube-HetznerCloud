@@ -65,3 +65,7 @@ variable "cluster_name" {
 variable "attached" {
   type = bool
 }
+
+variable "enable_ipv6" {
+  type = bool
+}

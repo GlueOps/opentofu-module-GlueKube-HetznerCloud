@@ -15,6 +15,7 @@ module "node_pool" {
   cluster_name           = var.autoglue.autoglue_cluster_name
   region                 = var.region
   attached               = each.value.attached
+  enable_ipv6            = each.value.enable_ipv6
 }
 
 resource "autoglue_cluster_node_pools" "autoglue_cluster_node_pools" {
