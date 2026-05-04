@@ -31,3 +31,15 @@ resource "autoglue_cluster_control_plane_record_set" "ctrl_record" {
   cluster_id    = autoglue_cluster.cluster.id
   record_set_id = autoglue_record_set.cluster_record.id
 }
+
+resource "autoglue_cluster_metadata" "service_cidr" {
+  cluster_id = autoglue_cluster.cluster.id
+  key        = "network_service_cidr"
+  value      = var.network_service_cidr
+}
+
+resource "autoglue_cluster_metadata" "calico_cidr" {
+  cluster_id = autoglue_cluster.cluster.id
+  key        = "calico_network_calico_cidr"
+  value      = var.calico_network_calico_cidr
+}
