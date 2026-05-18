@@ -9,7 +9,7 @@ resource "hcloud_server" "cluster_node" {
     ipv4_enabled = true
     ipv6_enabled = var.enable_ipv6
   }
-  user_data = base64encode("${templatefile("${path.module}/cloudinit/cloud-init-${var.role}.yaml", {
+  user_data = base64encode("${templatefile("${path.module}/cloudinit/cloud-init.yaml", {
     public_key = autoglue_ssh_key.ssh_key.public_key
     hostname   = "${var.role}-${var.name}-${each.key}"
   })}")
