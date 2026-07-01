@@ -15,6 +15,10 @@ resource "hcloud_server" "cluster_node" {
   })}")
 
   firewall_ids = [hcloud_firewall.firewall.id]
+
+  lifecycle {
+    ignore_changes = [user_data, public_net]
+  }
 }
 
 resource "hcloud_server_network" "cluster_node_network" {
