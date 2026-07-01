@@ -1,10 +1,10 @@
 #cloud-config
 package_reboot_if_required: true
 package_update: true
-package_upgrade: true
 packages:
   - curl
   - qemu-guest-agent
+  - hc-utils=0.0.6-1
 hostname: ${hostname}
 ssh_pwauth: true
 chpasswd:
@@ -31,4 +31,4 @@ runcmd:
   - modprobe br_netfilter
   - sysctl --system
   - systemctl enable --now qemu-guest-agent
-  - sudo systemctl disable --now unattended-upgrades.service apt-daily.timer apt-daily-upgrade.timer apt-daily.service apt   
+  - sudo systemctl disable --now unattended-upgrades.service apt-daily.timer apt-daily-upgrade.timer apt-daily.service apt
