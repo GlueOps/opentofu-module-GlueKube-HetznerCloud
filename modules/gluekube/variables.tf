@@ -24,7 +24,6 @@ variable "image" {
 variable "region" {
   type        = string
   description = "The Hetzner Cloud region/location for the nodes."
-  default     = "hel1"
 }
 
 variable "node_count" {

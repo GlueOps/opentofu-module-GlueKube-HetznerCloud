@@ -32,14 +32,8 @@ resource "autoglue_cluster_control_plane_record_set" "ctrl_record" {
   record_set_id = autoglue_record_set.cluster_record.id
 }
 
-resource "autoglue_cluster_metadata" "service_cidr" {
-  cluster_id = autoglue_cluster.cluster.id
-  key        = "network_service_cidr"
-  value      = var.network_service_cidr
-}
-
-resource "autoglue_cluster_metadata" "calico_cidr" {
-  cluster_id = autoglue_cluster.cluster.id
-  key        = "calico_network_calico_cidr"
-  value      = var.calico_network_calico_cidr
+module "cluster_metadata" {
+  source = "git::https://github.com/GlueOps/opentofu-module-autoglue-metadata.git"
+  cluster_id       = autoglue_cluster.cluster.id
+  cluster_metadata = var.cluster_metadata
 }
