@@ -4,7 +4,6 @@ package_update: true
 packages:
   - curl
   - qemu-guest-agent
-  - hc-utils=0.0.6-1
 hostname: ${hostname}
 ssh_pwauth: true
 chpasswd:
@@ -26,9 +25,17 @@ write_files:
       eth0
     path: /etc/glueops/public-interface
     permissions: "0644"
+  - content: |                                                                                                                                                              
+      network:                                                                                                                                                              
+        version: 2                                                                                                                                                          
+        ethernets:                                                                                                                                                          
+          enp7s0:                                                                                                                                                           
+            dhcp4: true                                                                                                                                                     
+    path: /etc/netplan/60-private-network.yaml  
 runcmd:
   - modprobe overlay
   - modprobe br_netfilter
+  - netplan apply
   - sysctl --system
   - systemctl enable --now qemu-guest-agent
   - sudo systemctl disable --now unattended-upgrades.service apt-daily.timer apt-daily-upgrade.timer apt-daily.service apt
