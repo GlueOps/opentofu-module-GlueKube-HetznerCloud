@@ -6,15 +6,27 @@ This opentofu module deploys a Kubernetes cluster on Hetzner Cloud using GlueKub
 ```hcl
 
 module "captain" {
-  source                = "git::https://github.com/GlueOps/opentofu-module-GlueKube-HetznerCloud.git"
+  source                = "git::https://github.com/GlueOps/opentofu-module-GlueKube-HetznerCloud?ref=v1.6.3" # x-release-please-version
   gluekube_docker_image = "ghcr.io/glueops/gluekube"
-  gluekube_docker_tag   = "v0.0.15-rc9"
-  vpc_cidr_block        = "10.0.0.0/16"
-  subnet_cidr           = "10.0.0.0/24"
-  region                = var.provider_credentials.region
+  gluekube_docker_tag   = "latest"
 
-  # control_plane_endpoint_dns = "ctrp"
   provider_credentials = var.provider_credentials
+
+  vpc_cidr_block = "10.0.0.0/16"
+  subnet_cidr    = "10.0.0.0/24"
+  region         = var.provider_credentials.region
+
+  cluster_metadata = {
+    calico_network_calico_cidr           = "172.16.0.0/16"
+    calico_node_address_autodetection_v4 = "10.0.0.0/16"
+    network_service_cidr                 = "192.168.0.0/16"
+  }
+
+  bastion = {
+    instance_type = "cpx32"
+    image         = "ubuntu-24.04"
+  }
+
   autoglue = {
     autoglue_cluster_name = var.autoglue_cluster_name
 
@@ -23,6 +35,7 @@ module "captain" {
       autoglue_org_secret = var.autoglue_org_secret
       base_url            = var.autoglue_base_url
     }
+
     route_53_config = {
       aws_access_key_id     = var.aws_access_key_id
       aws_secret_access_key = var.aws_secret_access_key
@@ -32,30 +45,23 @@ module "captain" {
       credential_id         = var.autoglue_credentials_id
     }
   }
-  bastion = {
-    instance_type = "cpx32"
-    image         = "ubuntu-24.04"
-  }
 
   node_pools = [
     {
-      "instance_type" : "cpx32",
-      "role" : "master",
       "name" : "master-node-pool",
+      "instance_type" : "cpx32",
       "image" : "ubuntu-24.04",
       "node_count" : 3,
-
+      "role" : "master",
       "kubernetes_labels" : {},
       "kubernetes_taints" : []
     },
     {
-      "instance_type" : "cpx32",
-      "role" : "worker",
       "name" : "glueops-platform-node-pool-1",
+      "instance_type" : "cpx32",
       "image" : "ubuntu-24.04",
-
       "node_count" : 2,
-
+      "role" : "worker",
       "kubernetes_labels" : {
         "glueops.dev/role" : "glueops-platform"
       },
@@ -66,68 +72,9 @@ module "captain" {
           effect = "NoSchedule"
         }
       ]
-    },
-    {
-      "instance_type" : "cpx32",
-      "role" : "worker",
-      "name" : "glueops-platform-node-pool-argocd-app-controller",
-      "node_count" : 2,
-      "image" : "ubuntu-24.04",
-
-      "kubernetes_labels" : {
-        "glueops.dev/role" : "glueops-platform-argocd-app-controller"
-      },
-      "kubernetes_taints" : [
-        {
-          key    = "glueops.dev/role"
-          value  = "glueops-platform-argocd-app-controller"
-          effect = "NoSchedule"
-        }
-      ]
-    },
-    {
-      "instance_type" : "cpx32",
-      "role" : "worker",
-      "name" : "clusterwide-node-pool-1",
-      "image" : "ubuntu-24.04",
-
-      "node_count" : 2,
-
-      "kubernetes_labels" : {},
-      "kubernetes_taints" : []
-    },
-    
-    {
-      "instance_type" : "cpx32",
-      "role" : "worker",
-      "name" : "node-pool-platform-loadbalancer-2",
-      "image" : "ubuntu-24.04",
-
-      "node_count" : 2,
-
-      "kubernetes_labels" : {
-        "glueops.dev/role" : "glueops-platform",
-        "use-as-loadbalancer" : "platform"
-      },
-      "kubernetes_taints" : []
-    },
-    {
-      "instance_type" : "cpx32",
-      "role" : "worker",
-      "name" : "node-pool-public-loadbalancer",
-      "image" : "ubuntu-24.04",
-
-      "node_count" : 2,
-
-      "kubernetes_labels" : {
-        "glueops.dev/role" : "glueops-platform",
-        "use-as-loadbalancer" : "public"
-      },
-      "kubernetes_taints" : []
-    },
+    }
   ]
 }
-
 ```
 
 ## Requirements
