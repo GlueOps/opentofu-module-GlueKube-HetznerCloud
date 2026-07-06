@@ -19,7 +19,10 @@
   "packages": {
     ".": {
       "release-type": "simple",
-      "package-name": "opentofu-module-GlueKube-HetznerCloud"
+      "package-name": "opentofu-module-GlueKube-HetznerCloud",
+      "extra-files": [
+        { "type": "generic", "path": "docs/.header.md" }
+      ]
     }
   }
 }
