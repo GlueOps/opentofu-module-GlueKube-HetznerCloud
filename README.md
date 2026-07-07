@@ -50,9 +50,9 @@ module "captain" {
     {
       "instance_type" : "cpx32",
       "role" : "master",
-      "name" : "master-node-pool-1",
+      "name" : "master-node-pool",
       "image" : "ubuntu-24.04",
-      "node_count" : 1,
+      "node_count" : 3,
 
       "kubernetes_labels" : {},
       "kubernetes_taints" : []
@@ -60,7 +60,7 @@ module "captain" {
     {
       "instance_type" : "cpx32",
       "role" : "worker",
-      "name" : "glueops-platform-node-pool-1",
+      "name" : "glueops-platform-node-pool",
       "image" : "ubuntu-24.04",
 
       "node_count" : 3,
@@ -80,7 +80,7 @@ module "captain" {
     {
       "instance_type" : "cpx32",
       "role" : "worker",
-      "name" : "clusterwide-node-pool-2",
+      "name" : "clusterwide-node-pool",
       "image" : "ubuntu-24.04",
 
       "node_count" : 2,
