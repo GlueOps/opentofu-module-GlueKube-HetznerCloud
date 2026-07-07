@@ -6,15 +6,27 @@ This opentofu module deploys a Kubernetes cluster on Hetzner Cloud using GlueKub
 ```hcl
 
 module "captain" {
-  source                = "git::https://github.com/GlueOps/opentofu-module-GlueKube-HetznerCloud.git"
+  source                = "git::https://github.com/GlueOps/opentofu-module-GlueKube-HetznerCloud.git?ref=v1.6.4" # x-release-please-version
   gluekube_docker_image = "ghcr.io/glueops/gluekube"
-  gluekube_docker_tag   = "v0.0.15-rc9"
-  vpc_cidr_block        = "10.0.0.0/16"
-  subnet_cidr           = "10.0.0.0/24"
-  region                = var.provider_credentials.region
+  gluekube_docker_tag   = "v1.34.5-gluekube.27"
 
-  # control_plane_endpoint_dns = "ctrp"
   provider_credentials = var.provider_credentials
+
+  vpc_cidr_block = "10.0.0.0/16"
+  subnet_cidr    = "10.0.0.0/24"
+  region         = var.provider_credentials.region
+
+  cluster_metadata = {
+    calico_network_calico_cidr = "172.16.0.0/16"
+    network_service_cidr       = "192.168.0.0/16"
+    cloud                      = "hetzner"
+  }
+
+  bastion = {
+    instance_type = "cpx32"
+    image         = "ubuntu-24.04"
+  }
+
   autoglue = {
     autoglue_cluster_name = var.autoglue_cluster_name
 
@@ -23,6 +35,7 @@ module "captain" {
       autoglue_org_secret = var.autoglue_org_secret
       base_url            = var.autoglue_base_url
     }
+
     route_53_config = {
       aws_access_key_id     = var.aws_access_key_id
       aws_secret_access_key = var.aws_secret_access_key
@@ -31,10 +44,6 @@ module "captain" {
       zone_id               = var.route53_zone_id
       credential_id         = var.autoglue_credentials_id
     }
-  }
-  bastion = {
-    instance_type = "cpx32"
-    image         = "ubuntu-24.04"
   }
 
   node_pools = [
@@ -51,10 +60,10 @@ module "captain" {
     {
       "instance_type" : "cpx32",
       "role" : "worker",
-      "name" : "glueops-platform-node-pool-1",
+      "name" : "glueops-platform-node-pool",
       "image" : "ubuntu-24.04",
 
-      "node_count" : 2,
+      "node_count" : 3,
 
       "kubernetes_labels" : {
         "glueops.dev/role" : "glueops-platform"
@@ -64,31 +73,14 @@ module "captain" {
           key    = "glueops.dev/role"
           value  = "glueops-platform"
           effect = "NoSchedule"
-        }
+        },
+        
       ]
     },
     {
       "instance_type" : "cpx32",
       "role" : "worker",
-      "name" : "glueops-platform-node-pool-argocd-app-controller",
-      "node_count" : 2,
-      "image" : "ubuntu-24.04",
-
-      "kubernetes_labels" : {
-        "glueops.dev/role" : "glueops-platform-argocd-app-controller"
-      },
-      "kubernetes_taints" : [
-        {
-          key    = "glueops.dev/role"
-          value  = "glueops-platform-argocd-app-controller"
-          effect = "NoSchedule"
-        }
-      ]
-    },
-    {
-      "instance_type" : "cpx32",
-      "role" : "worker",
-      "name" : "clusterwide-node-pool-1",
+      "name" : "clusterwide-node-pool",
       "image" : "ubuntu-24.04",
 
       "node_count" : 2,
@@ -96,58 +88,88 @@ module "captain" {
       "kubernetes_labels" : {},
       "kubernetes_taints" : []
     },
-    
+
     {
       "instance_type" : "cpx32",
       "role" : "worker",
-      "name" : "node-pool-platform-loadbalancer-2",
+      "name" : "platform-loadbalancer-node-pool",
       "image" : "ubuntu-24.04",
 
       "node_count" : 2,
 
       "kubernetes_labels" : {
-        "glueops.dev/role" : "glueops-platform",
-        "use-as-loadbalancer" : "platform"
+        "use-as-loadbalancer" : "platform-traefik",
       },
-      "kubernetes_taints" : []
+      "kubernetes_taints" : [
+        {
+          key    = "dedicated"
+          value  = "platform-traefik"
+          effect = "NoSchedule"
+        }
+      ],
     },
+
     {
       "instance_type" : "cpx32",
       "role" : "worker",
-      "name" : "node-pool-public-loadbalancer",
+      "name" : "public-loadbalancer-node-pool",
       "image" : "ubuntu-24.04",
 
       "node_count" : 2,
 
       "kubernetes_labels" : {
-        "glueops.dev/role" : "glueops-platform",
-        "use-as-loadbalancer" : "public"
+        "use-as-loadbalancer" : "public-traefik",
       },
-      "kubernetes_taints" : []
+      "kubernetes_taints" : [
+        {
+          key    = "dedicated"
+          value  = "public-traefik"
+          effect = "NoSchedule"
+        }
+      ],
     },
+    {
+      "instance_type" : "cpx32",
+      "role" : "worker",
+      "name" : "nginx-loadbalancer-node-pool",
+      "image" : "ubuntu-24.04",
+
+      "node_count" : 2,
+
+      "kubernetes_labels" : {
+        "use-as-loadbalancer" : "public",
+      },
+      "kubernetes_taints" : [
+        {
+          key    = "dedicated"
+          value  = "public"
+          effect = "NoSchedule"
+        }
+      ],
+    }
   ]
 }
-
 ```
 
 ## Requirements
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_autoglue"></a> [autoglue](#requirement\_autoglue) | 0.10.6 |
+| <a name="requirement_autoglue"></a> [autoglue](#requirement\_autoglue) | 0.10.12 |
 | <a name="requirement_hcloud"></a> [hcloud](#requirement\_hcloud) | 1.66.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_autoglue"></a> [autoglue](#provider\_autoglue) | 0.10.6 |
+| <a name="provider_autoglue"></a> [autoglue](#provider\_autoglue) | 0.10.12 |
 | <a name="provider_hcloud"></a> [hcloud](#provider\_hcloud) | 1.66.0 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
+| <a name="module_cluster_metadata"></a> [cluster\_metadata](#module\_cluster\_metadata) | git::https://github.com/GlueOps/opentofu-module-autoglue-metadata.git | v0.0.2 |
 | <a name="module_node_pool"></a> [node\_pool](#module\_node\_pool) | ./modules/gluekube | n/a |
 
 ## Resources
@@ -175,9 +197,10 @@ module "captain" {
 |------|-------------|------|---------|:--------:|
 | <a name="input_autoglue"></a> [autoglue](#input\_autoglue) | Configuration for the AutoGlue platform integration, including cluster naming, credentials, and Route53 DNS settings. | <pre>object({<br/>    autoglue_cluster_name = string<br/><br/>    credentials = object({<br/>      autoglue_key        = string<br/>      autoglue_org_secret = string<br/>      base_url            = string<br/>    })<br/><br/>    route_53_config = object({<br/>      aws_access_key_id     = string<br/>      aws_secret_access_key = string<br/>      aws_region            = string<br/>      domain_name           = string<br/>      zone_id               = string<br/>      credential_id         = string<br/>    })<br/>  })</pre> | n/a | yes |
 | <a name="input_bastion"></a> [bastion](#input\_bastion) | Bastion configuration. | <pre>object({<br/>    instance_type = string<br/>    image         = string<br/>  })</pre> | n/a | yes |
+| <a name="input_cluster_metadata"></a> [cluster\_metadata](#input\_cluster\_metadata) | Structured cluster metadata passed through to the autoglue-metadata module. All fields are required unless noted:<br/>  - calico\_network\_calico\_cidr: CIDR block for the Calico pod network (e.g. "10.244.0.0/16").<br/>  - network\_service\_cidr:       CIDR block for Kubernetes services (e.g. "10.96.0.0/12").<br/>  - cloud:                      Target cloud provider. One of: "aws", "proxmox", "hetzner".<br/>  - cloud\_vars:                 Optional map of cloud-specific overrides. When cloud is "proxmox",<br/>                                "calico\_node\_address\_autodetection\_v4" is required. | <pre>object({<br/>    calico_network_calico_cidr = string<br/>    network_service_cidr       = string<br/>    cloud                      = string<br/>    cloud_vars                 = optional(map(string), {}) # Holds the cloud-specific overrides<br/>  })</pre> | n/a | yes |
 | <a name="input_gluekube_docker_image"></a> [gluekube\_docker\_image](#input\_gluekube\_docker\_image) | n/a | `string` | `"ghcr.io/glueops/gluekube"` | no |
 | <a name="input_gluekube_docker_tag"></a> [gluekube\_docker\_tag](#input\_gluekube\_docker\_tag) | n/a | `string` | `"v0.0.15-rc9"` | no |
-| <a name="input_node_pools"></a> [node\_pools](#input\_node\_pools) | n/a | <pre>list(object({<br/>    name                   = string<br/>    image                  = string<br/>    node_count             = number<br/>    instance_type          = string<br/>    role                   = string<br/>    enable_ipv6            = optional(bool, false)<br/>    kubernetes_labels      = optional(map(string), {})<br/>    kubernetes_annotations = optional(map(string), {})<br/>    kubernetes_taints = list(object({<br/>      key    = string<br/>      value  = string<br/>      effect = string<br/>    }))<br/>    attached = optional(bool, true)<br/><br/>  }))</pre> | n/a | yes |
+| <a name="input_node_pools"></a> [node\_pools](#input\_node\_pools) | n/a | <pre>list(object({<br/>    name                   = string<br/>    image                  = string<br/>    node_count             = number<br/>    instance_type          = string<br/>    role                   = string<br/>    enable_ipv6            = optional(bool, false)<br/>    kubernetes_labels      = optional(map(string), {})<br/>    kubernetes_annotations = optional(map(string), {})<br/>    kubernetes_taints = list(object({<br/>      key    = string<br/>      value  = string<br/>      effect = string<br/>    }))<br/>    attached = optional(bool, true)<br/>  }))</pre> | n/a | yes |
 | <a name="input_provider_credentials"></a> [provider\_credentials](#input\_provider\_credentials) | n/a | <pre>object({<br/>    name   = string<br/>    token  = string<br/>    region = string<br/>  })</pre> | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | n/a | `string` | `"hel1"` | no |
 | <a name="input_subnet_cidr"></a> [subnet\_cidr](#input\_subnet\_cidr) | n/a | `string` | n/a | yes |
