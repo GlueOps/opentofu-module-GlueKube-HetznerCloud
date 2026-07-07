@@ -85,9 +85,7 @@ module "captain" {
 
       "node_count" : 2,
 
-      "kubernetes_labels" : {
-        "glueops.dev/role" : "glueops-platform"
-      }
+      "kubernetes_labels" : {},
       "kubernetes_taints" : []
     },
 
@@ -101,7 +99,6 @@ module "captain" {
 
       "kubernetes_labels" : {
         "use-as-loadbalancer" : "platform-traefik",
-        "glueops.dev/role" : "glueops-platform",
       },
       "kubernetes_taints" : [
         {
@@ -122,12 +119,30 @@ module "captain" {
 
       "kubernetes_labels" : {
         "use-as-loadbalancer" : "public-traefik",
-        "glueops.dev/role" : "glueops-platform",
       },
       "kubernetes_taints" : [
         {
           key    = "dedicated"
           value  = "public-traefik"
+          effect = "NoSchedule"
+        }
+      ],
+    },
+    {
+      "instance_type" : "cpx32",
+      "role" : "worker",
+      "name" : "nginx-loadbalancer-node-pool",
+      "image" : "ubuntu-24.04",
+
+      "node_count" : 2,
+
+      "kubernetes_labels" : {
+        "use-as-loadbalancer" : "public",
+      },
+      "kubernetes_taints" : [
+        {
+          key    = "dedicated"
+          value  = "public"
           effect = "NoSchedule"
         }
       ],
