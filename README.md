@@ -6,9 +6,9 @@ This opentofu module deploys a Kubernetes cluster on Hetzner Cloud using GlueKub
 ```hcl
 
 module "captain" {
-  source                = "git::https://github.com/GlueOps/opentofu-module-GlueKube-HetznerCloud?ref=v1.6.3" # x-release-please-version
+  source                = "git::https://github.com/GlueOps/opentofu-module-GlueKube-HetznerCloud.git?ref=v1.6.4" # x-release-please-version
   gluekube_docker_image = "ghcr.io/glueops/gluekube"
-  gluekube_docker_tag   = "latest"
+  gluekube_docker_tag   = "v1.34.5-gluekube.27"
 
   provider_credentials = var.provider_credentials
 
