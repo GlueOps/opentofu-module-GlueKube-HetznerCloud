@@ -3,9 +3,7 @@ package_update: true
 packages:
   - curl
 hostname: ${hostname}
-ssh_pwauth: true
-chpasswd:
-  expire: false
+ssh_pwauth: false
 users:
   - name: cluster
     groups: sudo
