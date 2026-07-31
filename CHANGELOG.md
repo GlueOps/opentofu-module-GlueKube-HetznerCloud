@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.7.1](https://github.com/GlueOps/opentofu-module-GlueKube-HetznerCloud/compare/v1.7.0...v1.7.1) (2026-07-31)
+
+
+### Bug Fixes
+
+* remove ssh pass auth ([1a478cd](https://github.com/GlueOps/opentofu-module-GlueKube-HetznerCloud/commit/1a478cd13869241f2afd7f497c8a64016a48afc9))
+
+
+### Miscellaneous Chores
+
+* add Apache-2.0 LICENSE ([#64](https://github.com/GlueOps/opentofu-module-GlueKube-HetznerCloud/issues/64)) ([b807344](https://github.com/GlueOps/opentofu-module-GlueKube-HetznerCloud/commit/b807344f33c277537fd757c317c46123ea20e71a))
+
 ## [1.7.0](https://github.com/GlueOps/opentofu-module-GlueKube-HetznerCloud/compare/v1.6.4...v1.7.0) (2026-07-07)
 
 
