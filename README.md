@@ -156,14 +156,14 @@ module "captain" {
 | Name | Version |
 |------|---------|
 | <a name="requirement_autoglue"></a> [autoglue](#requirement\_autoglue) | 0.10.12 |
-| <a name="requirement_hcloud"></a> [hcloud](#requirement\_hcloud) | 1.66.0 |
+| <a name="requirement_hcloud"></a> [hcloud](#requirement\_hcloud) | 1.68.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
 | <a name="provider_autoglue"></a> [autoglue](#provider\_autoglue) | 0.10.12 |
-| <a name="provider_hcloud"></a> [hcloud](#provider\_hcloud) | 1.66.0 |
+| <a name="provider_hcloud"></a> [hcloud](#provider\_hcloud) | 1.68.0 |
 
 ## Modules
 
@@ -185,11 +185,11 @@ module "captain" {
 | autoglue_record_set.cluster_record | resource |
 | autoglue_server.bastion | resource |
 | autoglue_ssh_key.bastion | resource |
-| [hcloud_firewall.bastion_firewall](https://registry.terraform.io/providers/hetznercloud/hcloud/1.66.0/docs/resources/firewall) | resource |
-| [hcloud_network.private_network](https://registry.terraform.io/providers/hetznercloud/hcloud/1.66.0/docs/resources/network) | resource |
-| [hcloud_network_subnet.private_network_subnet](https://registry.terraform.io/providers/hetznercloud/hcloud/1.66.0/docs/resources/network_subnet) | resource |
-| [hcloud_server.bastion](https://registry.terraform.io/providers/hetznercloud/hcloud/1.66.0/docs/resources/server) | resource |
-| [hcloud_server_network.bastion_network](https://registry.terraform.io/providers/hetznercloud/hcloud/1.66.0/docs/resources/server_network) | resource |
+| [hcloud_firewall.bastion_firewall](https://registry.terraform.io/providers/hetznercloud/hcloud/1.68.0/docs/resources/firewall) | resource |
+| [hcloud_network.private_network](https://registry.terraform.io/providers/hetznercloud/hcloud/1.68.0/docs/resources/network) | resource |
+| [hcloud_network_subnet.private_network_subnet](https://registry.terraform.io/providers/hetznercloud/hcloud/1.68.0/docs/resources/network_subnet) | resource |
+| [hcloud_server.bastion](https://registry.terraform.io/providers/hetznercloud/hcloud/1.68.0/docs/resources/server) | resource |
+| [hcloud_server_network.bastion_network](https://registry.terraform.io/providers/hetznercloud/hcloud/1.68.0/docs/resources/server_network) | resource |
 
 ## Inputs
 
