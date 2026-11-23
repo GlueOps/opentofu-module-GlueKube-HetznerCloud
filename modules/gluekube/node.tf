@@ -14,7 +14,7 @@ module "cloud_init" {
       content     = "eth0\n"
       permissions = "0644"
     },
-    local.private_network_netplan,
+    var.private_network_netplan,
   ]
   extra_runcmd = ["netplan apply"]
 }

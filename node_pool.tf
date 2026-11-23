@@ -1,21 +1,22 @@
 module "node_pool" {
-  for_each               = { for np in var.node_pools : np.name => np }
-  source                 = "./modules/gluekube"
-  name                   = each.value.name
-  instance_type          = each.value.instance_type
-  image                  = each.value.image
-  role                   = each.value.role
-  node_count             = each.value.node_count
-  kubernetes_labels      = each.value.kubernetes_labels
-  kubernetes_taints      = each.value.kubernetes_taints
-  kubernetes_annotations = each.value.kubernetes_annotations
-  network_id             = hcloud_network.private_network.id
-  subnet_id              = hcloud_network_subnet.private_network_subnet.id
-  vpc_cidr               = var.vpc_cidr_block
-  cluster_name           = var.autoglue.autoglue_cluster_name
-  region                 = var.region
-  attached               = each.value.attached
-  enable_ipv6            = each.value.enable_ipv6
+  for_each                = { for np in var.node_pools : np.name => np }
+  source                  = "./modules/gluekube"
+  name                    = each.value.name
+  instance_type           = each.value.instance_type
+  image                   = each.value.image
+  role                    = each.value.role
+  node_count              = each.value.node_count
+  kubernetes_labels       = each.value.kubernetes_labels
+  kubernetes_taints       = each.value.kubernetes_taints
+  kubernetes_annotations  = each.value.kubernetes_annotations
+  network_id              = hcloud_network.private_network.id
+  subnet_id               = hcloud_network_subnet.private_network_subnet.id
+  vpc_cidr                = var.vpc_cidr_block
+  cluster_name            = var.autoglue.autoglue_cluster_name
+  region                  = var.region
+  attached                = each.value.attached
+  enable_ipv6             = each.value.enable_ipv6
+  private_network_netplan = local.private_network_netplan
 }
 
 resource "autoglue_cluster_node_pools" "autoglue_cluster_node_pools" {
