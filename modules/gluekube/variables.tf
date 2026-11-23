@@ -68,3 +68,12 @@ variable "attached" {
 variable "enable_ipv6" {
   type = bool
 }
+
+variable "private_network_netplan" {
+  type = object({
+    path        = string
+    content     = string
+    permissions = string
+  })
+  description = "Netplan file that configures the private network interface. Defined once in the root module so nodes and the bastion stay identical."
+}

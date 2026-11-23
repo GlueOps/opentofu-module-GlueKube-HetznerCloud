@@ -1,3 +1,23 @@
+# The cloud-config shared with the AWS and Proxmox modules. Only what is specific to this platform
+# is passed in; the update policy, the post-upgrade reboot and the `cluster` user live there.
+module "cloud_init" {
+  source   = "git::https://github.com/GlueOps/opentofu-module-GlueKube-cloudinit.git?ref=v0.2.0"
+  for_each = toset([for i in range(0, var.node_count) : tostring(i)])
+
+  hostname   = "${var.role}-${var.name}-${each.key}"
+  public_key = autoglue_ssh_key.ssh_key.public_key
+
+  extra_write_files = [
+    {
+      # Read by GlueKube's apply-calico-firewall.yaml. eth0 carries the public IP on Hetzner Cloud.
+      path        = "/etc/glueops/public-interface"
+      content     = "eth0\n"
+      permissions = "0644"
+    },
+    var.private_network_netplan,
+  ]
+  extra_runcmd = ["netplan apply"]
+}
 
 resource "hcloud_server" "cluster_node" {
   for_each    = toset([for i in range(0, var.node_count) : tostring(i)])
@@ -9,10 +29,7 @@ resource "hcloud_server" "cluster_node" {
     ipv4_enabled = true
     ipv6_enabled = var.enable_ipv6
   }
-  user_data = base64encode("${templatefile("${path.module}/cloudinit/cloud-init.yaml", {
-    public_key = autoglue_ssh_key.ssh_key.public_key
-    hostname   = "${var.role}-${var.name}-${each.key}"
-  })}")
+  user_data = base64encode(module.cloud_init[each.key].user_data)
 
   firewall_ids = [hcloud_firewall.firewall.id]
 
