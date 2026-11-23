@@ -3,7 +3,7 @@ terraform {
   required_providers {
     hcloud = {
       source  = "hetznercloud/hcloud"
-      version = "1.66.0"
+      version = "1.67.0"
     }
     autoglue = {
       source  = "registry.terraform.io/GlueOps/autoglue"
